@@ -1,7 +1,8 @@
 .page {
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
   margin: 0;
   padding: 0;
@@ -41,9 +42,7 @@
   flex-direction: column;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow:
-    var(--card-shadow),
-    0 0 0 1px rgba(255, 255, 255, 0.28) inset;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28) inset;
 }
 
 .player-hero {
