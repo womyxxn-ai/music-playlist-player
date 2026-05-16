@@ -8,7 +8,7 @@ export const ALBUM_COVER = '/album-cover.jpg';
 
 export const tracks = [
   {
-    title: '『葬送のフリーレン』Original Soundtrack',
+    title: '『葬送のフリーレン』 Original Soundtrack',
     artist: 'Evan Call',
     duration: '51:51',
     youtube: '/songs/frieren-original-soundtrack.mp3',
