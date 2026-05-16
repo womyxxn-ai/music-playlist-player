@@ -94,18 +94,19 @@
 
 .now-playing-title {
   margin: 0;
-  font-size: 1.65rem;
+  font-size: 1.5rem;
   font-weight: 900;
   line-height: 1.15;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  min-height: calc(1.65rem * 1.15 * 2);
-  max-height: calc(1.65rem * 1.15 * 2);
+  min-height: calc(1.5rem * 1.15 * 2);
+  max-height: calc(1.5rem * 1.15 * 2);
   overflow: hidden;
   word-break: break-word;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
 }
 
 .now-playing-artist {
@@ -215,13 +216,13 @@
   z-index: 1;
   box-shadow: var(--playlist-inset);
   border-top: none;
-  padding: 14px 0 0;
+  padding: 0;
 }
 
 .track-list {
   flex: 1;
   min-height: 0;
-  padding: 0 33px 0 14px;
+  padding: 14px 33px 0 14px;
   margin-right: 0;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -325,8 +326,10 @@
   margin-bottom: 0;
 }
 
-.track-row:hover {
-  background: var(--row-hover);
+@media (hover: hover) and (pointer: fine) {
+  .track-row:hover {
+    background: var(--row-hover);
+  }
 }
 
 .track-row.active {
@@ -419,10 +422,11 @@
 }
 
 .player-card.mini {
-  width: 500px;
+  width: min(500px, 100vw);
+  min-width: 380px;
   height: 180px;
   display: grid;
-  grid-template-columns: 180px 1fr;
+  grid-template-columns: 180px minmax(0, 1fr);
   grid-template-rows: 120px 60px;
   border-radius: 9px;
   background: var(--hero-bg);
@@ -459,6 +463,7 @@
   grid-column: 2;
   grid-row: 1;
   min-height: 0;
+  min-width: 0;
   background: var(--hero-bg);
   box-shadow: none;
   padding: 14px 0 0;
@@ -467,6 +472,7 @@
 .player-card.mini .track-list {
   padding: 0 19px 0 1px;
   margin-right: 14px;
+  min-width: 0;
   overflow-y: scroll;
 }
 
@@ -484,6 +490,7 @@
 }
 
 .player-card.mini .track-main {
+  min-width: 0;
   transform: none;
 }
 
@@ -549,6 +556,21 @@
   .player-card {
     width: 100vw;
     max-width: 400px;
+  }
+
+  .player-card.mini {
+    min-width: 340px;
+    grid-template-columns: 156px minmax(0, 1fr);
+  }
+
+  .player-card.mini .hero-main {
+    padding: 12px 0 12px 12px;
+  }
+
+  .player-card.mini .cover {
+    width: 132px;
+    min-width: 132px;
+    max-width: 132px;
   }
 
   .cover {
