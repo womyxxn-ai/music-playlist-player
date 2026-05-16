@@ -8,10 +8,10 @@ export const ALBUM_COVER = '/album-cover.jpg';
 
 export const tracks = [
   {
-    title: 'Time Flows Ever Onward',
+    title: '『葬送のフリーレン』Original Soundtrack',
     artist: 'Evan Call',
-    duration: '2:20',
-    youtube: 'https://www.youtube.com/watch?v=RgKAFK5djSk',
+    duration: '51:51',
+    youtube: '/songs/frieren-original-soundtrack.mp3',
   },
   {
     title: 'Sos',
