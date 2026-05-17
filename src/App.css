@@ -849,6 +849,16 @@
   .player-card.mini .skip-controls {
     gap: 0;
   }
+
+  .player-card.mini .skip-btn {
+    width: 27px;
+    height: 25px;
+  }
+
+  .player-card.mini .icon-skip {
+    width: 27px;
+    height: 27px;
+  }
 }
 
 @media (max-width: 316px) {
