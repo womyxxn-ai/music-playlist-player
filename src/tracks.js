@@ -17,7 +17,7 @@ export const tracks = [
     title: '勇者',
     artist: 'YOASOBI',
     duration: '3:14',
-    youtube: 'https://www.youtube.com/watch?v=M4-XU0a2hf0',
+    youtube: '/songs/YOASOBI-The-Brave.mp3',
   },
   {
     title: 'Sunny',
