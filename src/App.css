@@ -510,6 +510,7 @@
   display: grid;
   grid-template-columns: 166px minmax(0, 1fr);
   grid-template-rows: 120px 60px;
+  column-gap: 14px;
   border-radius: 9px;
   background: var(--hero-bg);
 }
@@ -789,9 +790,9 @@
 
 }
 
-@media (max-width: 236px) {
+@media (max-width: 332px) {
   .player-card.mini {
-    grid-template-columns: 166px 70px;
+    grid-template-columns: 166px 56px;
   }
 
   .player-card.mini .player-playlist {
