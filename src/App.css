@@ -841,6 +841,16 @@
   }
 }
 
+@media (max-width: 360px) {
+  .player-card.mini .hero-controls {
+    gap: 6px;
+  }
+
+  .player-card.mini .skip-controls {
+    gap: 0;
+  }
+}
+
 @media (max-width: 316px) {
   .player-card.mini {
     height: clamp(160px, calc(100vw - 56px), 180px);
