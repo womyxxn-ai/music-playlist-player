@@ -792,7 +792,7 @@
 
 @media (max-width: 332px) {
   .player-card.mini {
-    grid-template-columns: 166px 56px;
+    grid-template-columns: 166px minmax(56px, 1fr);
   }
 
   .player-card.mini .player-playlist {
