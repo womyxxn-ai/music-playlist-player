@@ -469,10 +469,10 @@
 
 .player-card.mini {
   width: min(500px, 100vw);
-  min-width: 380px;
+  min-width: 320px;
   height: 180px;
   display: grid;
-  grid-template-columns: 180px minmax(0, 1fr);
+  grid-template-columns: 166px minmax(0, 1fr);
   grid-template-rows: 120px 60px;
   border-radius: 9px;
   background: var(--hero-bg);
@@ -610,8 +610,8 @@
   }
 
   .player-card.mini {
-    min-width: 380px;
-    grid-template-columns: 180px minmax(0, 1fr);
+    min-width: 320px;
+    grid-template-columns: 166px minmax(0, 1fr);
   }
 
   .cover {
