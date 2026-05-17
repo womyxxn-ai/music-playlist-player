@@ -180,7 +180,9 @@ function getInitialViewMode(query) {
 export default function App() {
   const playerRef = useRef(null);
   const trackListRef = useRef(null);
+  const trackRowsRef = useRef([]);
   const scrollbarRef = useRef(null);
+  const shouldAlignActiveTrackRef = useRef(false);
   const query = useMemo(() => new URLSearchParams(window.location.search), []);
   const queryMode = query.get('mode');
   const isEmbed = useMemo(() => query.get('embed') === 'true' || isInsideEmbeddedFrame(), [query]);
@@ -267,11 +269,13 @@ export default function App() {
   );
 
   const goNext = useCallback(() => {
+    shouldAlignActiveTrackRef.current = true;
     setCurrentIndex((i) => (i + 1) % tracks.length);
     setPlaying(true);
   }, []);
 
   const goPrev = useCallback(() => {
+    shouldAlignActiveTrackRef.current = true;
     setCurrentIndex((i) => (i - 1 + tracks.length) % tracks.length);
     setPlaying(true);
   }, []);
@@ -312,6 +316,27 @@ export default function App() {
     const top = (scrollTop / (scrollHeight - clientHeight)) * maxTop;
     setScrollbar({ top, height, visible: true });
   }, []);
+
+  useEffect(() => {
+    if (!shouldAlignActiveTrackRef.current) return undefined;
+
+    shouldAlignActiveTrackRef.current = false;
+    const frame = requestAnimationFrame(() => {
+      const list = trackListRef.current;
+      const row = trackRowsRef.current[currentIndex];
+      if (!list || !row) return;
+
+      const listTop = list.getBoundingClientRect().top;
+      const rowTop = row.getBoundingClientRect().top;
+      list.scrollTo({
+        top: list.scrollTop + rowTop - listTop,
+        behavior: 'smooth',
+      });
+      updateScrollbar();
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [currentIndex, updateScrollbar]);
 
   useEffect(() => {
     updateScrollbar();
@@ -394,6 +419,9 @@ export default function App() {
                   key={`${track.title}-${idx}`}
                   role="listitem"
                   className={`track-row${active ? ' active' : ''}`}
+                  ref={(node) => {
+                    trackRowsRef.current[idx] = node;
+                  }}
                   onClick={() => selectTrack(idx)}
                 >
                   <D className="track-index" aria-hidden>
