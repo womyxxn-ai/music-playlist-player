@@ -36,8 +36,8 @@
 }
 
 .player-card {
-  width: min(400px, 96vw, calc(96vh * 0.7692308));
-  height: min(520px, 124.8vw, 96vh);
+  width: min(400px, 96vw);
+  height: min(520px, 96vh);
   display: flex;
   flex-direction: column;
   border-radius: 12px;
@@ -52,9 +52,9 @@
 }
 
 .player-hero {
-  flex: 0 0 229px;
-  height: 229px;
-  min-height: 229px;
+  flex: 0 0 min(229px, 44%);
+  height: min(229px, 44%);
+  min-height: 170px;
   padding: 19px 19px 14px;
   display: flex;
   flex-direction: column;
@@ -734,16 +734,16 @@
 
 @media (max-width: 400px), (max-height: 520px) {
   .player-card:not(.mini) {
-    width: min(96vw, calc(96vh * 0.7692308));
-    height: min(124.8vw, 96vh);
+    width: min(96vw, 400px);
+    height: min(96vh, 520px);
     min-width: 260px;
     min-height: 338px;
   }
 
   .player-card:not(.mini) .player-hero {
-    flex-basis: min(57.25vw, 44.038vh);
-    height: min(57.25vw, 44.038vh);
-    min-height: min(57.25vw, 44.038vh);
+    flex-basis: clamp(170px, 44%, 229px);
+    height: clamp(170px, 44%, 229px);
+    min-height: 170px;
     padding: clamp(13px, min(4.75vw, 3.654vh), 19px) clamp(13px, min(4.75vw, 3.654vh), 19px)
       clamp(10px, min(3.5vw, 2.692vh), 14px);
   }
