@@ -74,7 +74,7 @@ function IconPrev() {
   return (
     <svg className="icon-skip" viewBox="0 0 24 24" fill="#ffffff" aria-hidden>
       <rect x="5.5" y="5.5" width="3.2" height="13" rx="1" />
-      <path d="M6.7 12L17.1 6.25Q18.5 5.3 18.5 7V17Q18.5 18.7 17.1 17.75L6.7 12z" />
+      <path d="M6.7 12L17.1 5.5Q18.5 4.62 18.5 6.27V17.73Q18.5 19.38 17.1 18.5L6.7 12z" />
     </svg>
   );
 }
@@ -83,7 +83,7 @@ function IconNext() {
   return (
     <svg className="icon-skip" viewBox="0 0 24 24" fill="#ffffff" aria-hidden>
       <rect x="15.3" y="5.5" width="3.2" height="13" rx="1" />
-      <path d="M17.3 12L6.9 17.75Q5.5 18.7 5.5 17V7Q5.5 5.3 6.9 6.25L17.3 12z" />
+      <path d="M17.3 12L6.9 18.5Q5.5 19.38 5.5 17.73V6.27Q5.5 4.62 6.9 5.5L17.3 12z" />
     </svg>
   );
 }
