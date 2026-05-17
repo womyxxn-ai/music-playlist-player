@@ -559,18 +559,8 @@
   }
 
   .player-card.mini {
-    min-width: 340px;
-    grid-template-columns: 156px minmax(0, 1fr);
-  }
-
-  .player-card.mini .hero-main {
-    padding: 12px 0 12px 12px;
-  }
-
-  .player-card.mini .cover {
-    width: 132px;
-    min-width: 132px;
-    max-width: 132px;
+    min-width: 380px;
+    grid-template-columns: 180px minmax(0, 1fr);
   }
 
   .cover {
