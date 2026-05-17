@@ -210,7 +210,7 @@
   margin: 0;
   border: none;
   background: transparent;
-  color: #ee8493;
+  color: #eb8996;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1023,10 +1023,7 @@
 
 @media (max-height: 560px) {
   .player-card.embed:not(.mini) .theme-heart-btn {
-    width: 32px;
-    height: 32px;
-    top: calc(clamp(13px, min(4.75vw, 3.654vh), 19px) + min(148px, 39vw, 30vh) + 12px);
-    bottom: auto;
+    bottom: 12px;
   }
 
   .player-card.embed:not(.mini) .icon-heart {
@@ -1037,9 +1034,7 @@
 
 @media (max-height: 520px) {
   .player-card.embed:not(.mini) .theme-heart-btn {
-    width: 30px;
-    height: 30px;
-    top: calc(clamp(13px, min(4.75vw, 3.654vh), 19px) + min(148px, 39vw, 30vh) + 8px);
+    bottom: 10px;
   }
 
   .player-card.embed:not(.mini) .icon-heart {
