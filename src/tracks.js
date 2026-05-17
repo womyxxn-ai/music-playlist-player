@@ -29,7 +29,7 @@ export const tracks = [
     title: 'lulu.',
     artist: 'Mrs. GREEN APPLE',
     duration: '4:55',
-    youtube: '/songs/Mrs-GREEN-APPLE-lulu.mp3',
+    youtube: '/songs/GREEN-APPLE-lulu.mp3',
   },
   {
     title: 'Time Flows Ever Onward',
