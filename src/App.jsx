@@ -105,6 +105,55 @@ function IconPauseSmall() {
   );
 }
 
+function OverflowMarquee({ text }) {
+  const containerRef = useRef(null);
+  const textRef = useRef(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    const measure = () => {
+      const container = containerRef.current;
+      const title = textRef.current;
+      if (!container || !title) return;
+      setIsOverflowing(title.scrollWidth > container.clientWidth + 1);
+    };
+
+    measure();
+    const frame = requestAnimationFrame(measure);
+    if (typeof ResizeObserver === 'undefined') {
+      return () => cancelAnimationFrame(frame);
+    }
+
+    const resizeObserver = new ResizeObserver(measure);
+    if (containerRef.current) resizeObserver.observe(containerRef.current);
+    if (textRef.current) resizeObserver.observe(textRef.current);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
+    };
+  }, [text]);
+
+  return (
+    <span
+      className={`track-title-scroll${isOverflowing ? ' is-overflowing' : ''}`}
+      ref={containerRef}
+      title={text}
+    >
+      <span className="track-title-scroll-inner">
+        <span className="track-title-scroll-text" ref={textRef}>
+          {text}
+        </span>
+        {isOverflowing && (
+          <span className="track-title-scroll-text track-title-scroll-duplicate" aria-hidden>
+            {text}
+          </span>
+        )}
+      </span>
+    </span>
+  );
+}
+
 export default function App() {
   const playerRef = useRef(null);
   const trackListRef = useRef(null);
@@ -298,7 +347,7 @@ export default function App() {
                   </D>
                   <D className="track-main">
                     <D className="track-title-line">
-                      <span>{track.title}</span>
+                      {active ? <OverflowMarquee text={track.title} /> : <span>{track.title}</span>}
                       <span className="track-artist-inline">· {track.artist}</span>
                       {track.new && <span className="badge badge-new">New</span>}
                       {track.explicit && <span className="badge badge-explicit">Explicit</span>}

@@ -222,7 +222,7 @@
 .track-list {
   flex: 1;
   min-height: 0;
-  padding: 14px 33px 0 14px;
+  padding: 14px 33px 14px 14px;
   margin-right: 0;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -362,11 +362,57 @@
 .track-title-line {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 5px;
   font-size: 0.96rem;
   font-weight: 800;
   line-height: 1.2;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.track-title-line > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track-title-scroll {
+  flex: 0 0 auto;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.track-title-scroll-inner {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.track-title-scroll-text {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.track-title-scroll-duplicate {
+  padding-left: 2rem;
+}
+
+.track-title-scroll.is-overflowing .track-title-scroll-inner {
+  animation: track-title-marquee 12s linear infinite;
+  will-change: transform;
+}
+
+@keyframes track-title-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 1rem));
+  }
 }
 
 .track-artist-inline {
@@ -453,6 +499,7 @@
   min-width: 152px;
   max-width: 152px;
   border-radius: 9px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
 }
 
 .player-card.mini .now-playing-info {
@@ -501,11 +548,15 @@
   overflow: hidden;
 }
 
-.player-card.mini .track-title-line span:first-child {
+.player-card.mini .track-title-line > span:first-child {
   flex: 0 0 auto;
   max-width: 72%;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.player-card.mini .track-title-scroll {
+  max-width: 100%;
 }
 
 .player-card.mini .track-artist-inline {
