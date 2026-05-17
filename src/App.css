@@ -217,11 +217,11 @@
   cursor: pointer;
   flex-shrink: 0;
   transition:
-    width 0.16s cubic-bezier(0.22, 1, 0.36, 1),
-    height 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
     color 0.22s ease,
     opacity 0.15s ease,
-    transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
   animation: heart-pop-in 0.46s cubic-bezier(0.18, 1.35, 0.32, 1) both;
 }
 
@@ -253,7 +253,9 @@
   transition:
     fill 0.22s ease,
     filter 0.22s ease,
-    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .theme-heart-btn.neutral .icon-heart {
@@ -949,7 +951,7 @@
   }
 
   .player-card:not(.mini) .cover {
-    max-width: min(39vw, 30vh);
+    max-width: min(148px, 39vw, 30vh);
     min-width: 104px;
   }
 
