@@ -246,6 +246,7 @@ export default function App() {
     if (previousViewModeRef.current === effectiveViewMode) return undefined;
 
     previousViewModeRef.current = effectiveViewMode;
+    shouldAlignActiveTrackRef.current = true;
     setIsLayoutChanging(true);
     const timeout = window.setTimeout(() => setIsLayoutChanging(false), 280);
     return () => window.clearTimeout(timeout);
