@@ -53,7 +53,7 @@
 }
 
 .player-card.embed:not(.mini) {
-  width: min(520px, 96vw, 96vh);
+  width: min(900px, 96vw);
   height: min(520px, 96vh);
 }
 
@@ -798,6 +798,10 @@
 }
 
 @media (min-aspect-ratio: 1 / 1) {
+  .player-card.embed:not(.mini) {
+    width: min(520px, 96vw, 96vh);
+  }
+
   .player-card.embed:not(.mini) .player-hero {
     flex-basis: clamp(170px, 43%, 224px);
     height: clamp(170px, 43%, 224px);
