@@ -769,11 +769,19 @@
 .player-card.mini .skip-btn {
   width: 30px;
   height: 28px;
+  transition:
+    width 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.1s ease,
+    opacity 0.15s ease;
 }
 
 .player-card.mini .icon-skip {
   width: 30px;
   height: 30px;
+  transition:
+    width 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (max-width: 400px), (max-height: 520px) {
