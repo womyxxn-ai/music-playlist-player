@@ -42,9 +42,12 @@
   flex-direction: column;
   border-radius: 12px;
   overflow: hidden;
+  background: var(--playlist-bg);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28) inset;
   transform-origin: center center;
   transition:
+    width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
     border-radius 0.28s ease,
     box-shadow 0.28s ease;
 }
@@ -241,6 +244,7 @@
   display: flex;
   flex-direction: column;
   background: var(--playlist-bg);
+  margin-top: -1px;
   position: relative;
   z-index: 1;
   box-shadow: var(--playlist-inset);
@@ -535,11 +539,11 @@
   }
 
   38% {
-    transform: scaleX(1.012) scaleY(0.975);
+    transform: scaleX(1.01) scaleY(0.985);
   }
 
   68% {
-    transform: scaleX(0.996) scaleY(1.008);
+    transform: scaleX(0.997) scaleY(1.004);
   }
 
   100% {
