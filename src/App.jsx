@@ -354,7 +354,7 @@ export default function App() {
     });
 
     return () => cancelAnimationFrame(frame);
-  }, [currentIndex, updateActiveHighlight, updateScrollbar]);
+  }, [currentIndex, effectiveViewMode, updateActiveHighlight, updateScrollbar]);
 
   useEffect(() => {
     const frame = requestAnimationFrame(updateActiveHighlight);
