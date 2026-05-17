@@ -382,8 +382,8 @@ export default function App() {
               playing={playing}
               volume={0.85}
               muted={false}
-              width="1"
-              height="1"
+              width="200"
+              height="200"
               progressInterval={250}
               onEnded={goNext}
               onPlay={() => setPlaying(true)}

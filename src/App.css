@@ -460,8 +460,8 @@
   position: fixed;
   top: -9999px;
   left: -9999px;
-  width: 1px;
-  height: 1px;
+  width: 200px;
+  height: 200px;
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
