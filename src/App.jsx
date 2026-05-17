@@ -162,7 +162,7 @@ function isInsideEmbeddedFrame() {
   }
 }
 
-const EMBED_MINI_HEIGHT = 360;
+const EMBED_MINI_HEIGHT = 364;
 
 function getViewportHeight() {
   return window.innerHeight || document.documentElement.clientHeight || 0;
@@ -214,6 +214,8 @@ export default function App() {
         ? 'mini'
         : 'normal'
       : viewMode;
+  const previousViewModeRef = useRef(effectiveViewMode);
+  const [isLayoutChanging, setIsLayoutChanging] = useState(false);
 
   const handleCoverLoad = useCallback(
     (e) => {
@@ -236,6 +238,15 @@ export default function App() {
     window.addEventListener('resize', updateViewportHeight);
     return () => window.removeEventListener('resize', updateViewportHeight);
   }, [isEmbed, queryMode]);
+
+  useEffect(() => {
+    if (previousViewModeRef.current === effectiveViewMode) return undefined;
+
+    previousViewModeRef.current = effectiveViewMode;
+    setIsLayoutChanging(true);
+    const timeout = window.setTimeout(() => setIsLayoutChanging(false), 280);
+    return () => window.clearTimeout(timeout);
+  }, [effectiveViewMode]);
 
   useEffect(() => {
     setPlayedSeconds(0);
@@ -335,7 +346,10 @@ export default function App() {
         </D>
       )}
 
-      <D className={`player-card ${effectiveViewMode === 'mini' ? 'mini' : ''}`} style={themeStyle}>
+      <D
+        className={`player-card${effectiveViewMode === 'mini' ? ' mini' : ''}${isLayoutChanging ? ' is-layout-changing' : ''}`}
+        style={themeStyle}
+      >
         <section className="player-hero" aria-label="현재 재생">
           <D className="hero-main">
             <img
