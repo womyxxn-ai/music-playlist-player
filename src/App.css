@@ -100,7 +100,7 @@
 }
 
 .cover {
-  width: 42%;
+  width: 44%;
   max-width: 148px;
   min-width: 108px;
   aspect-ratio: 1;
@@ -769,8 +769,8 @@
   }
 
   .player-card:not(.mini) .cover {
-    max-width: min(37vw, 28.462vh);
-    min-width: 96px;
+    max-width: min(39vw, 30vh);
+    min-width: 104px;
   }
 
   .player-card:not(.mini) .now-playing-title {
