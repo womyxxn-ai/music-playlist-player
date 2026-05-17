@@ -154,13 +154,38 @@ function OverflowMarquee({ text }) {
   );
 }
 
+function isInsideEmbeddedFrame() {
+  try {
+    return window.self !== window.top;
+  } catch {
+    return true;
+  }
+}
+
+const EMBED_MINI_HEIGHT = 360;
+
+function getViewportHeight() {
+  return window.innerHeight || document.documentElement.clientHeight || 0;
+}
+
+function getInitialViewMode(query) {
+  const queryMode = query.get('mode');
+  if (queryMode === 'mini' || queryMode === 'normal') return queryMode;
+  if (query.get('embed') === 'true' || isInsideEmbeddedFrame()) {
+    return getViewportHeight() <= EMBED_MINI_HEIGHT ? 'mini' : 'normal';
+  }
+  return 'normal';
+}
+
 export default function App() {
   const playerRef = useRef(null);
   const trackListRef = useRef(null);
   const scrollbarRef = useRef(null);
   const query = useMemo(() => new URLSearchParams(window.location.search), []);
-  const isEmbed = query.get('embed') === 'true';
-  const [viewMode, setViewMode] = useState(() => (query.get('mode') === 'mini' ? 'mini' : 'normal'));
+  const queryMode = query.get('mode');
+  const isEmbed = useMemo(() => query.get('embed') === 'true' || isInsideEmbeddedFrame(), [query]);
+  const [viewportHeight, setViewportHeight] = useState(getViewportHeight);
+  const [viewMode, setViewMode] = useState(() => getInitialViewMode(query));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [playedSeconds, setPlayedSeconds] = useState(0);
@@ -183,6 +208,12 @@ export default function App() {
 
   const currentTrack = tracks[currentIndex];
   const currentUrl = useMemo(() => getTrackUrl(currentTrack), [currentTrack]);
+  const effectiveViewMode =
+    isEmbed && queryMode !== 'mini' && queryMode !== 'normal'
+      ? viewportHeight <= EMBED_MINI_HEIGHT
+        ? 'mini'
+        : 'normal'
+      : viewMode;
 
   const handleCoverLoad = useCallback(
     (e) => {
@@ -196,6 +227,15 @@ export default function App() {
       applyCoverTheme(coverRef.current);
     }
   }, [ALBUM_COVER, applyCoverTheme]);
+
+  useEffect(() => {
+    if (!isEmbed || queryMode === 'mini' || queryMode === 'normal') return undefined;
+
+    const updateViewportHeight = () => setViewportHeight(getViewportHeight());
+    updateViewportHeight();
+    window.addEventListener('resize', updateViewportHeight);
+    return () => window.removeEventListener('resize', updateViewportHeight);
+  }, [isEmbed, queryMode]);
 
   useEffect(() => {
     setPlayedSeconds(0);
@@ -270,7 +310,7 @@ export default function App() {
     const resizeObserver = new ResizeObserver(updateScrollbar);
     resizeObserver.observe(el);
     return () => resizeObserver.disconnect();
-  }, [updateScrollbar, viewMode, tracks.length]);
+  }, [updateScrollbar, effectiveViewMode, tracks.length]);
 
   const D = 'div';
 
@@ -295,7 +335,7 @@ export default function App() {
         </D>
       )}
 
-      <D className={`player-card ${viewMode === 'mini' ? 'mini' : ''}`} style={themeStyle}>
+      <D className={`player-card ${effectiveViewMode === 'mini' ? 'mini' : ''}`} style={themeStyle}>
         <section className="player-hero" aria-label="현재 재생">
           <D className="hero-main">
             <img
