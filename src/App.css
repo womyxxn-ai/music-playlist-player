@@ -285,6 +285,28 @@
   }
 }
 
+@keyframes heart-jelly-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  36% {
+    opacity: 1;
+    transform: scaleX(1.08) scaleY(0.82);
+  }
+
+  72% {
+    opacity: 0.42;
+    transform: scaleX(0.72) scaleY(1.08);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.36);
+  }
+}
+
 .skip-btn {
   width: 34px;
   height: 32px;
@@ -863,6 +885,7 @@
   bottom: 14px;
   width: 30px;
   height: 30px;
+  animation: heart-pop-in 0.46s cubic-bezier(0.18, 1.35, 0.32, 1) both;
 }
 
 .player-card.mini .icon-heart {
@@ -986,17 +1009,15 @@
 
 @media (max-width: 380px) {
   .player-card.mini .theme-heart-btn {
-    opacity: 0;
     pointer-events: none;
-    transform: scale(0.86);
+    animation: heart-jelly-out 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
-@media (max-height: 430px) {
+@media (max-height: 500px) {
   .player-card.embed:not(.mini) .theme-heart-btn {
-    opacity: 0;
     pointer-events: none;
-    transform: scale(0.86);
+    animation: heart-jelly-out 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
