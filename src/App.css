@@ -1015,15 +1015,26 @@
 
 @media (max-width: 340px) {
   .player-card.mini .theme-heart-btn {
-    pointer-events: none;
-    animation: heart-jelly-out 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+    display: none;
   }
 }
 
-@media (max-height: 460px) {
+@media (max-height: 510px) {
   .player-card.embed:not(.mini) .theme-heart-btn {
-    pointer-events: none;
-    animation: heart-jelly-out 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+    width: 32px;
+    height: 32px;
+    bottom: 12px;
+  }
+
+  .player-card.embed:not(.mini) .icon-heart {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-height: 480px) {
+  .player-card.embed:not(.mini) .theme-heart-btn {
+    display: none;
   }
 }
 
