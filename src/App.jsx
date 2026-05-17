@@ -343,8 +343,9 @@ export default function App() {
 
       const listTop = list.getBoundingClientRect().top;
       const rowTop = row.getBoundingClientRect().top;
+      const listPaddingTop = parseFloat(window.getComputedStyle(list).paddingTop) || 0;
       list.scrollTo({
-        top: list.scrollTop + rowTop - listTop,
+        top: list.scrollTop + rowTop - listTop - listPaddingTop,
         behavior: 'smooth',
       });
       updateScrollbar();
