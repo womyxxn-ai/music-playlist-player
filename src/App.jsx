@@ -91,7 +91,10 @@ function IconNext() {
 function IconHeart() {
   return (
     <svg className="icon-heart" viewBox="0 0 24 24" aria-hidden>
-      <path d="M12 20.45C7.15 16.25 3.6 13.05 3.6 9.25C3.6 6.8 5.45 5 7.9 5C9.72 5 11.15 6.05 12 7.95C12.85 6.05 14.28 5 16.1 5C18.55 5 20.4 6.8 20.4 9.25C20.4 13.05 16.85 16.25 12.45 20.1C12.2 20.32 11.8 20.32 11.55 20.1Z" />
+      <path
+        d="M12 20.45C7.15 16.25 3.6 13.05 3.6 9.25C3.6 6.8 5.45 5 7.9 5C9.72 5 11.15 6.05 12 7.95C12.85 6.05 14.28 5 16.1 5C18.55 5 20.4 6.8 20.4 9.25C20.4 13.05 16.85 16.25 12.45 20.1C12.2 20.32 11.8 20.32 11.55 20.1Z"
+        transform="translate(0 -0.7)"
+      />
     </svg>
   );
 }
@@ -197,6 +200,7 @@ function getInitialViewMode(query) {
 
 export default function App() {
   const playerRef = useRef(null);
+  const playerHeroRef = useRef(null);
   const trackListRef = useRef(null);
   const trackRowsRef = useRef([]);
   const playlistSectionRef = useRef(null);
@@ -216,6 +220,7 @@ export default function App() {
   const [scrollbar, setScrollbar] = useState({ top: 0, height: 0, visible: false });
   const [activeHighlight, setActiveHighlight] = useState({ top: 0, height: 0, visible: false });
   const [normalHeartDisplay, setNormalHeartDisplay] = useState('visible');
+  const [normalHeartMetrics, setNormalHeartMetrics] = useState({ top: 180, size: 34 });
   const coverRef = useRef(null);
   const [themeStyle, setThemeStyle] = useState(() =>
     buildThemeStyles({
@@ -371,14 +376,23 @@ export default function App() {
       return;
     }
 
+    const hero = playerHeroRef.current;
     const cover = coverRef.current;
     const playlist = playlistSectionRef.current;
-    if (!cover || !playlist) return;
+    if (!hero || !cover || !playlist) return;
 
+    const heroTop = hero.getBoundingClientRect().top;
     // Shadows are not included in the image rect, so keep a small visual buffer.
     const coverBottom = cover.getBoundingClientRect().bottom + 1;
     const playlistTop = playlist.getBoundingClientRect().top;
     const availableSpace = playlistTop - coverBottom;
+    const size = availableSpace >= 62 ? 34 : 32;
+    const gap = Math.max(0, (availableSpace - size) / 2);
+
+    setNormalHeartMetrics({
+      top: coverBottom - heroTop + gap,
+      size,
+    });
 
     if (availableSpace >= 62) {
       setNormalHeartDisplay('visible');
@@ -427,6 +441,7 @@ export default function App() {
     }
 
     const resizeObserver = new ResizeObserver(update);
+    if (playerHeroRef.current) resizeObserver.observe(playerHeroRef.current);
     if (coverRef.current) resizeObserver.observe(coverRef.current);
     if (playlistSectionRef.current) resizeObserver.observe(playlistSectionRef.current);
     window.addEventListener('resize', update);
@@ -478,7 +493,7 @@ export default function App() {
         className={`player-card${isEmbed ? ' embed' : ''}${effectiveViewMode === 'mini' ? ' mini' : ''}${neutralTheme ? ' neutral' : ''}${isLayoutChanging ? ' is-layout-changing' : ''}`}
         style={playerStyle}
       >
-        <section className="player-hero" aria-label="현재 재생">
+        <section className="player-hero" aria-label="현재 재생" ref={playerHeroRef}>
           <D className="hero-main">
             <img
               ref={coverRef}
@@ -514,6 +529,14 @@ export default function App() {
           <button
             type="button"
             className={`theme-heart-btn${neutralTheme ? ' neutral' : ' active'}${heartSettling ? ' settling' : ''}${effectiveViewMode === 'mini' ? '' : ` ${normalHeartDisplay}`}`}
+            style={
+              effectiveViewMode === 'mini'
+                ? undefined
+                : {
+                    '--heart-top': `${normalHeartMetrics.top}px`,
+                    '--heart-size': `${normalHeartMetrics.size}px`,
+                  }
+            }
             onClick={() => setNeutralTheme((value) => !value)}
             aria-label={neutralTheme ? '컬러모드 켜기' : '컬러모드 끄기'}
             aria-pressed={!neutralTheme}

@@ -203,9 +203,10 @@
 .theme-heart-btn {
   position: absolute;
   left: 19px;
+  top: var(--heart-top, auto);
   bottom: 15px;
-  width: 34px;
-  height: 34px;
+  width: var(--heart-size, 34px);
+  height: var(--heart-size, 34px);
   padding: 0;
   margin: 0;
   border: none;
@@ -243,14 +244,11 @@
 }
 
 .theme-heart-btn.compact {
-  width: 32px;
-  height: 32px;
-  bottom: 12px;
 }
 
 .theme-heart-btn.compact .icon-heart {
-  width: 30px;
-  height: 30px;
+  width: calc(var(--heart-size, 32px) - 2px);
+  height: calc(var(--heart-size, 32px) - 2px);
 }
 
 .theme-heart-btn.hidden {
@@ -258,8 +256,8 @@
 }
 
 .icon-heart {
-  width: 32px;
-  height: 32px;
+  width: calc(var(--heart-size, 34px) - 2px);
+  height: calc(var(--heart-size, 34px) - 2px);
   display: block;
   fill: currentColor;
   filter:
@@ -905,6 +903,7 @@
 .player-card.mini .theme-heart-btn {
   position: absolute;
   left: 180px;
+  top: auto;
   bottom: 14px;
   width: 30px;
   height: 30px;
@@ -958,7 +957,6 @@
 
   .player-card:not(.mini) .theme-heart-btn {
     left: clamp(13px, min(4.75vw, 3.654vh), 19px);
-    bottom: clamp(11px, min(3.75vw, 2.885vh), 15px);
   }
 
   .player-card:not(.mini) .hero-main {
