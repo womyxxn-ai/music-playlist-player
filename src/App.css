@@ -222,6 +222,7 @@
     color 0.22s ease,
     opacity 0.15s ease,
     transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: heart-pop-in 0.46s cubic-bezier(0.18, 1.35, 0.32, 1) both;
 }
 
 .theme-heart-btn.neutral {
@@ -291,24 +292,24 @@
     transform: scale(1);
   }
 
-  24% {
+  22% {
     opacity: 1;
-    transform: scaleX(1.06) scaleY(0.9);
+    transform: scaleX(1.12) scaleY(0.78);
   }
 
-  48% {
-    opacity: 0.88;
-    transform: scaleX(0.94) scaleY(1.04);
+  46% {
+    opacity: 1;
+    transform: scaleX(0.72) scaleY(1.12);
   }
 
-  72% {
-    opacity: 0.42;
-    transform: scaleX(0.68) scaleY(0.86);
+  68% {
+    opacity: 0.58;
+    transform: scaleX(0.46) scaleY(0.72);
   }
 
   100% {
     opacity: 0;
-    transform: scale(0.28);
+    transform: scale(0.18);
   }
 }
 
@@ -1012,17 +1013,17 @@
   }
 }
 
-@media (max-width: 340px) {
+@media (max-width: 352px) {
   .player-card.mini .theme-heart-btn {
     pointer-events: none;
-    animation: heart-jelly-out 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: heart-jelly-out 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
-@media (max-height: 560px) {
+@media (max-height: 600px) {
   .player-card.embed:not(.mini) .theme-heart-btn {
     pointer-events: none;
-    animation: heart-jelly-out 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: heart-jelly-out 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
