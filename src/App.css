@@ -1013,14 +1013,14 @@
   }
 }
 
-@media (max-width: 352px) {
+@media (max-width: 340px) {
   .player-card.mini .theme-heart-btn {
     pointer-events: none;
     animation: heart-jelly-out 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
-@media (max-height: 600px) {
+@media (max-height: 460px) {
   .player-card.embed:not(.mini) .theme-heart-btn {
     pointer-events: none;
     animation: heart-jelly-out 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
