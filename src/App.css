@@ -506,7 +506,7 @@
 }
 
 .player-card.mini {
-  width: min(640px, 100vw);
+  width: min(900px, 100vw);
   min-width: 216px;
   height: 180px;
   display: grid;
