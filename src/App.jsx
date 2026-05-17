@@ -88,6 +88,14 @@ function IconNext() {
   );
 }
 
+function IconHeart() {
+  return (
+    <svg className="icon-heart" viewBox="0 0 24 24" aria-hidden>
+      <path d="M12 20.45C7.15 16.25 3.6 13.05 3.6 9.25C3.6 6.8 5.45 5 7.9 5C9.72 5 11.15 6.05 12 7.95C12.85 6.05 14.28 5 16.1 5C18.55 5 20.4 6.8 20.4 9.25C20.4 13.05 16.85 16.25 12.45 20.1C12.2 20.32 11.8 20.32 11.55 20.1Z" />
+    </svg>
+  );
+}
+
 function IconPlaySmall() {
   return (
     <svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -163,6 +171,16 @@ function isInsideEmbeddedFrame() {
 }
 
 const EMBED_MINI_HEIGHT = 364;
+const NEUTRAL_THEME_STYLE = {
+  '--hero-bg': '#b8b8b8',
+  '--playlist-bg': '#a8a8a8',
+  '--hero-shadow': '0 2px 8px rgba(45, 45, 42, 0.07)',
+  '--playlist-inset': 'inset 0 3px 10px rgba(45, 45, 42, 0.08)',
+  '--cover-shadow': '0 6px 14px rgba(45, 45, 42, 0.24)',
+  '--row-hover': 'rgba(255, 255, 255, 0.1)',
+  '--row-active': '#8d8d8d',
+  '--scrollbar': '#8d8d8d',
+};
 
 function getViewportHeight() {
   return window.innerHeight || document.documentElement.clientHeight || 0;
@@ -190,6 +208,7 @@ export default function App() {
   const [viewMode, setViewMode] = useState(() => getInitialViewMode(query));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [neutralTheme, setNeutralTheme] = useState(false);
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [durationCache, setDurationCache] = useState({});
@@ -211,6 +230,10 @@ export default function App() {
 
   const currentTrack = tracks[currentIndex];
   const currentUrl = useMemo(() => getTrackUrl(currentTrack), [currentTrack]);
+  const playerStyle = useMemo(
+    () => (neutralTheme ? { ...themeStyle, ...NEUTRAL_THEME_STYLE } : themeStyle),
+    [neutralTheme, themeStyle],
+  );
   const effectiveViewMode =
     isEmbed && queryMode !== 'mini' && queryMode !== 'normal'
       ? viewportHeight <= EMBED_MINI_HEIGHT
@@ -219,6 +242,7 @@ export default function App() {
       : viewMode;
   const previousViewModeRef = useRef(effectiveViewMode);
   const [isLayoutChanging, setIsLayoutChanging] = useState(false);
+  const [heartSettling, setHeartSettling] = useState(false);
 
   const handleCoverLoad = useCallback(
     (e) => {
@@ -245,11 +269,17 @@ export default function App() {
   useEffect(() => {
     if (previousViewModeRef.current === effectiveViewMode) return undefined;
 
+    const isEnteringMini = effectiveViewMode === 'mini';
     previousViewModeRef.current = effectiveViewMode;
     shouldAlignActiveTrackRef.current = true;
     setIsLayoutChanging(true);
+    setHeartSettling(isEnteringMini);
     const timeout = window.setTimeout(() => setIsLayoutChanging(false), 280);
-    return () => window.clearTimeout(timeout);
+    const heartTimeout = window.setTimeout(() => setHeartSettling(false), 380);
+    return () => {
+      window.clearTimeout(timeout);
+      window.clearTimeout(heartTimeout);
+    };
   }, [effectiveViewMode]);
 
   useEffect(() => {
@@ -399,8 +429,8 @@ export default function App() {
       )}
 
       <D
-        className={`player-card${isEmbed ? ' embed' : ''}${effectiveViewMode === 'mini' ? ' mini' : ''}${isLayoutChanging ? ' is-layout-changing' : ''}`}
-        style={themeStyle}
+        className={`player-card${isEmbed ? ' embed' : ''}${effectiveViewMode === 'mini' ? ' mini' : ''}${neutralTheme ? ' neutral' : ''}${isLayoutChanging ? ' is-layout-changing' : ''}`}
+        style={playerStyle}
       >
         <section className="player-hero" aria-label="현재 재생">
           <D className="hero-main">
@@ -435,6 +465,15 @@ export default function App() {
               <PlayPauseButton playing={playing} progress={playProgress} />
             </button>
           </D>
+          <button
+            type="button"
+            className={`theme-heart-btn${neutralTheme ? ' neutral' : ' active'}${heartSettling ? ' settling' : ''}`}
+            onClick={() => setNeutralTheme((value) => !value)}
+            aria-label={neutralTheme ? '컬러모드 켜기' : '컬러모드 끄기'}
+            aria-pressed={!neutralTheme}
+          >
+            <IconHeart />
+          </button>
         </section>
 
         <section className="player-playlist" aria-label="플레이리스트">

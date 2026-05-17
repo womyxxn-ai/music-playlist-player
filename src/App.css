@@ -49,6 +49,7 @@
   height: min(520px, 96vh);
   display: flex;
   flex-direction: column;
+  position: relative;
   border-radius: 12px;
   overflow: hidden;
   background: var(--playlist-bg);
@@ -64,6 +65,17 @@
 .player-card.embed:not(.mini) {
   width: min(900px, 100%);
   height: min(520px, calc(100vh - 20px));
+}
+
+.player-card.neutral {
+  --hero-bg: #b8b8b2;
+  --playlist-bg: #a8aaa2;
+  --hero-shadow: 0 2px 8px rgba(45, 45, 42, 0.07);
+  --playlist-inset: inset 0 3px 10px rgba(45, 45, 42, 0.08);
+  --cover-shadow: 0 6px 14px rgba(45, 45, 42, 0.24);
+  --row-hover: rgba(255, 255, 255, 0.1);
+  --row-active: #8f9487;
+  --scrollbar: #8f9487;
 }
 
 .player-hero {
@@ -172,7 +184,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 12px;
   padding-top: 6px;
   min-height: 58px;
   transition:
@@ -186,6 +198,91 @@
   display: flex;
   align-items: flex-end;
   gap: 2px;
+}
+
+.theme-heart-btn {
+  position: absolute;
+  left: 19px;
+  bottom: 15px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: #ee8493;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    width 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.22s ease,
+    opacity 0.15s ease,
+    transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.theme-heart-btn.neutral {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.theme-heart-btn:hover {
+  opacity: 0.9;
+}
+
+.theme-heart-btn:active {
+  transform: scale(0.94);
+}
+
+.theme-heart-btn.settling {
+  pointer-events: none;
+  animation: heart-pop-in 0.46s cubic-bezier(0.18, 1.35, 0.32, 1) both;
+}
+
+.icon-heart {
+  width: 32px;
+  height: 32px;
+  display: block;
+  fill: currentColor;
+  filter:
+    drop-shadow(0 -1px 2px rgba(255, 255, 255, 0.16))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12));
+  transition:
+    fill 0.22s ease,
+    filter 0.22s ease,
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.theme-heart-btn.neutral .icon-heart {
+  filter: none;
+}
+
+@keyframes heart-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+
+  42% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+
+  68% {
+    opacity: 1;
+    transform: scale(1.16);
+  }
+
+  84% {
+    transform: scale(0.94);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .skip-btn {
@@ -760,6 +857,19 @@
   gap: 12px;
 }
 
+.player-card.mini .theme-heart-btn {
+  position: absolute;
+  left: 180px;
+  bottom: 14px;
+  width: 30px;
+  height: 30px;
+}
+
+.player-card.mini .icon-heart {
+  width: 28px;
+  height: 28px;
+}
+
 .player-card.mini .play-btn,
 .player-card.mini .play-btn-svg {
   width: 42px;
@@ -798,6 +908,11 @@
     min-height: 170px;
     padding: clamp(13px, min(4.75vw, 3.654vh), 19px) clamp(13px, min(4.75vw, 3.654vh), 19px)
       clamp(10px, min(3.5vw, 2.692vh), 14px);
+  }
+
+  .player-card:not(.mini) .theme-heart-btn {
+    left: clamp(13px, min(4.75vw, 3.654vh), 19px);
+    bottom: clamp(11px, min(3.75vw, 2.885vh), 15px);
   }
 
   .player-card:not(.mini) .hero-main {
@@ -866,6 +981,14 @@
   .player-card.mini .icon-skip {
     width: 27px;
     height: 27px;
+  }
+}
+
+@media (max-width: 332px) {
+  .player-card.mini .theme-heart-btn {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.86);
   }
 }
 
