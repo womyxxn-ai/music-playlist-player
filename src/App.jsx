@@ -74,7 +74,7 @@ function IconPrev() {
   return (
     <svg className="icon-skip" viewBox="0 0 24 24" fill="#ffffff" aria-hidden>
       <rect x="5.5" y="5.5" width="3.2" height="13" rx="1" />
-      <path d="M8.7 12L17.1 6.25Q18.5 5.3 18.5 7V17Q18.5 18.7 17.1 17.75L8.7 12z" />
+      <path d="M6.7 12L17.1 6.25Q18.5 5.3 18.5 7V17Q18.5 18.7 17.1 17.75L6.7 12z" />
     </svg>
   );
 }
@@ -83,7 +83,7 @@ function IconNext() {
   return (
     <svg className="icon-skip" viewBox="0 0 24 24" fill="#ffffff" aria-hidden>
       <rect x="15.3" y="5.5" width="3.2" height="13" rx="1" />
-      <path d="M15.3 12L6.9 17.75Q5.5 18.7 5.5 17V7Q5.5 5.3 6.9 6.25L15.3 12z" />
+      <path d="M17.3 12L6.9 17.75Q5.5 18.7 5.5 17V7Q5.5 5.3 6.9 6.25L17.3 12z" />
     </svg>
   );
 }
@@ -394,7 +394,7 @@ export default function App() {
       const size = 34;
       const skipRect = skipControls?.getBoundingClientRect();
       const fallbackCenter = coverBottom + availableSpace / 2;
-      const centerY = skipRect ? skipRect.top + skipRect.height / 2 : fallbackCenter;
+      const centerY = (skipRect ? skipRect.top + skipRect.height / 2 : fallbackCenter) - 2;
       const minTop = coverBottom + 7;
       const maxTop = playlistTop - 7 - size;
       const top = Math.min(Math.max(centerY - size / 2, minTop), maxTop) - heroRect.top;
