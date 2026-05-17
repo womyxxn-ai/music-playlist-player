@@ -984,8 +984,16 @@
   }
 }
 
-@media (max-width: 332px) {
+@media (max-width: 380px) {
   .player-card.mini .theme-heart-btn {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.86);
+  }
+}
+
+@media (max-height: 430px) {
+  .player-card.embed:not(.mini) .theme-heart-btn {
     opacity: 0;
     pointer-events: none;
     transform: scale(0.86);
