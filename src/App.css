@@ -53,7 +53,7 @@
 }
 
 .player-card.embed:not(.mini) {
-  width: min(900px, 96vw);
+  width: min(900px, 100vw);
   height: min(520px, 96vh);
 }
 
