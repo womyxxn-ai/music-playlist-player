@@ -347,7 +347,7 @@ export default function App() {
       )}
 
       <D
-        className={`player-card${effectiveViewMode === 'mini' ? ' mini' : ''}${isLayoutChanging ? ' is-layout-changing' : ''}`}
+        className={`player-card${isEmbed ? ' embed' : ''}${effectiveViewMode === 'mini' ? ' mini' : ''}${isLayoutChanging ? ' is-layout-changing' : ''}`}
         style={themeStyle}
       >
         <section className="player-hero" aria-label="현재 재생">
