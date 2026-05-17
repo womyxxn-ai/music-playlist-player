@@ -242,6 +242,21 @@
   animation: heart-pop-in 0.46s cubic-bezier(0.18, 1.35, 0.32, 1) both;
 }
 
+.theme-heart-btn.compact {
+  width: 32px;
+  height: 32px;
+  bottom: 12px;
+}
+
+.theme-heart-btn.compact .icon-heart {
+  width: 30px;
+  height: 30px;
+}
+
+.theme-heart-btn.hidden {
+  display: none;
+}
+
 .icon-heart {
   width: 32px;
   height: 32px;
@@ -1017,34 +1032,6 @@
 
 @media (max-width: 340px) {
   .player-card.mini .theme-heart-btn {
-    display: none;
-  }
-}
-
-@media (max-height: 560px) {
-  .player-card.embed:not(.mini) .theme-heart-btn {
-    bottom: 12px;
-  }
-
-  .player-card.embed:not(.mini) .icon-heart {
-    width: 30px;
-    height: 30px;
-  }
-}
-
-@media (max-height: 520px) {
-  .player-card.embed:not(.mini) .theme-heart-btn {
-    bottom: 10px;
-  }
-
-  .player-card.embed:not(.mini) .icon-heart {
-    width: 28px;
-    height: 28px;
-  }
-}
-
-@media (max-height: 500px) {
-  .player-card.embed:not(.mini) .theme-heart-btn {
     display: none;
   }
 }

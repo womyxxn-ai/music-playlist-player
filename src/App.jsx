@@ -199,6 +199,7 @@ export default function App() {
   const playerRef = useRef(null);
   const trackListRef = useRef(null);
   const trackRowsRef = useRef([]);
+  const playlistSectionRef = useRef(null);
   const scrollbarRef = useRef(null);
   const shouldAlignActiveTrackRef = useRef(false);
   const query = useMemo(() => new URLSearchParams(window.location.search), []);
@@ -214,6 +215,7 @@ export default function App() {
   const [durationCache, setDurationCache] = useState({});
   const [scrollbar, setScrollbar] = useState({ top: 0, height: 0, visible: false });
   const [activeHighlight, setActiveHighlight] = useState({ top: 0, height: 0, visible: false });
+  const [normalHeartDisplay, setNormalHeartDisplay] = useState('visible');
   const coverRef = useRef(null);
   const [themeStyle, setThemeStyle] = useState(() =>
     buildThemeStyles({
@@ -363,6 +365,29 @@ export default function App() {
     });
   }, [currentIndex]);
 
+  const updateNormalHeartDisplay = useCallback(() => {
+    if (effectiveViewMode === 'mini') {
+      setNormalHeartDisplay('visible');
+      return;
+    }
+
+    const cover = coverRef.current;
+    const playlist = playlistSectionRef.current;
+    if (!cover || !playlist) return;
+
+    const coverBottom = cover.getBoundingClientRect().bottom;
+    const playlistTop = playlist.getBoundingClientRect().top;
+    const availableSpace = playlistTop - coverBottom;
+
+    if (availableSpace >= 42) {
+      setNormalHeartDisplay('visible');
+    } else if (availableSpace >= 38) {
+      setNormalHeartDisplay('compact');
+    } else {
+      setNormalHeartDisplay('hidden');
+    }
+  }, [effectiveViewMode]);
+
   useEffect(() => {
     if (!shouldAlignActiveTrackRef.current) return undefined;
 
@@ -390,6 +415,26 @@ export default function App() {
     const frame = requestAnimationFrame(updateActiveHighlight);
     return () => cancelAnimationFrame(frame);
   }, [currentIndex, effectiveViewMode, updateActiveHighlight]);
+
+  useEffect(() => {
+    const update = () => updateNormalHeartDisplay();
+    update();
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', update);
+      return () => window.removeEventListener('resize', update);
+    }
+
+    const resizeObserver = new ResizeObserver(update);
+    if (coverRef.current) resizeObserver.observe(coverRef.current);
+    if (playlistSectionRef.current) resizeObserver.observe(playlistSectionRef.current);
+    window.addEventListener('resize', update);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, [updateNormalHeartDisplay]);
 
   useEffect(() => {
     updateScrollbar();
@@ -467,7 +512,7 @@ export default function App() {
           </D>
           <button
             type="button"
-            className={`theme-heart-btn${neutralTheme ? ' neutral' : ' active'}${heartSettling ? ' settling' : ''}`}
+            className={`theme-heart-btn${neutralTheme ? ' neutral' : ' active'}${heartSettling ? ' settling' : ''}${effectiveViewMode === 'mini' ? '' : ` ${normalHeartDisplay}`}`}
             onClick={() => setNeutralTheme((value) => !value)}
             aria-label={neutralTheme ? '컬러모드 켜기' : '컬러모드 끄기'}
             aria-pressed={!neutralTheme}
@@ -476,7 +521,7 @@ export default function App() {
           </button>
         </section>
 
-        <section className="player-playlist" aria-label="플레이리스트">
+        <section className="player-playlist" aria-label="플레이리스트" ref={playlistSectionRef}>
           <D className="track-list" role="list" ref={trackListRef} onScroll={updateScrollbar}>
             <D
               className={`active-track-highlight${activeHighlight.visible ? '' : ' hidden'}`}
