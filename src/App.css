@@ -505,7 +505,7 @@
 
 .player-card.mini {
   width: min(500px, 100vw);
-  min-width: 224px;
+  min-width: 236px;
   height: 180px;
   display: grid;
   grid-template-columns: 166px minmax(0, 1fr);
@@ -783,15 +783,15 @@
   }
 
   .player-card.mini {
-    min-width: 224px;
+    min-width: 236px;
     grid-template-columns: 166px minmax(0, 1fr);
   }
 
 }
 
-@media (max-width: 320px) {
+@media (max-width: 236px) {
   .player-card.mini {
-    grid-template-columns: 166px 58px;
+    grid-template-columns: 166px 70px;
   }
 
   .player-card.mini .player-playlist {
@@ -801,9 +801,9 @@
   .player-card.mini .hero-controls {
     grid-column: 2;
     grid-row: 1 / 3;
-    align-self: center;
-    justify-self: center;
-    padding: 0 10px 0 0;
+    align-self: end;
+    justify-self: end;
+    padding: 0 14px 14px 0;
   }
 
   .player-card.mini .skip-controls {
