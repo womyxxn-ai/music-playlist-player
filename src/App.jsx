@@ -375,13 +375,14 @@ export default function App() {
     const playlist = playlistSectionRef.current;
     if (!cover || !playlist) return;
 
-    const coverBottom = cover.getBoundingClientRect().bottom;
+    // Shadows are not included in the image rect, so keep a small visual buffer.
+    const coverBottom = cover.getBoundingClientRect().bottom + 1;
     const playlistTop = playlist.getBoundingClientRect().top;
     const availableSpace = playlistTop - coverBottom;
 
-    if (availableSpace >= 42) {
+    if (availableSpace >= 62) {
       setNormalHeartDisplay('visible');
-    } else if (availableSpace >= 38) {
+    } else if (availableSpace >= 46) {
       setNormalHeartDisplay('compact');
     } else {
       setNormalHeartDisplay('hidden');
