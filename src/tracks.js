@@ -53,6 +53,6 @@ export const tracks = [
     title: 'Knife to the Throat',
     artist: 'Evan Call',
     duration: '2:07',
-    youtube: 'https://youtu.be/1ALyPqnrh1M?si=XZxsmRY5P0nu0l37',
+    youtube: '/songs/Knife-to-the-Throat.mp3',
   },
 ];
