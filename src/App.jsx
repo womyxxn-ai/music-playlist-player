@@ -194,6 +194,7 @@ export default function App() {
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [durationCache, setDurationCache] = useState({});
   const [scrollbar, setScrollbar] = useState({ top: 0, height: 0, visible: false });
+  const [activeHighlight, setActiveHighlight] = useState({ top: 0, height: 0, visible: false });
   const coverRef = useRef(null);
   const [themeStyle, setThemeStyle] = useState(() =>
     buildThemeStyles({
@@ -317,6 +318,20 @@ export default function App() {
     setScrollbar({ top, height, visible: true });
   }, []);
 
+  const updateActiveHighlight = useCallback(() => {
+    const row = trackRowsRef.current[currentIndex];
+    if (!row) {
+      setActiveHighlight((prev) => ({ ...prev, visible: false }));
+      return;
+    }
+
+    setActiveHighlight({
+      top: row.offsetTop,
+      height: row.offsetHeight,
+      visible: true,
+    });
+  }, [currentIndex]);
+
   useEffect(() => {
     if (!shouldAlignActiveTrackRef.current) return undefined;
 
@@ -333,20 +348,30 @@ export default function App() {
         behavior: 'smooth',
       });
       updateScrollbar();
+      updateActiveHighlight();
     });
 
     return () => cancelAnimationFrame(frame);
-  }, [currentIndex, updateScrollbar]);
+  }, [currentIndex, updateActiveHighlight, updateScrollbar]);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(updateActiveHighlight);
+    return () => cancelAnimationFrame(frame);
+  }, [currentIndex, effectiveViewMode, updateActiveHighlight]);
 
   useEffect(() => {
     updateScrollbar();
+    updateActiveHighlight();
     const el = trackListRef.current;
     if (!el || typeof ResizeObserver === 'undefined') return;
 
-    const resizeObserver = new ResizeObserver(updateScrollbar);
+    const resizeObserver = new ResizeObserver(() => {
+      updateScrollbar();
+      updateActiveHighlight();
+    });
     resizeObserver.observe(el);
     return () => resizeObserver.disconnect();
-  }, [updateScrollbar, effectiveViewMode, tracks.length]);
+  }, [updateActiveHighlight, updateScrollbar, effectiveViewMode, tracks.length]);
 
   const D = 'div';
 
@@ -412,6 +437,14 @@ export default function App() {
 
         <section className="player-playlist" aria-label="플레이리스트">
           <D className="track-list" role="list" ref={trackListRef} onScroll={updateScrollbar}>
+            <D
+              className={`active-track-highlight${activeHighlight.visible ? '' : ' hidden'}`}
+              aria-hidden
+              style={{
+                height: `${activeHighlight.height}px`,
+                transform: `translateY(${activeHighlight.top}px)`,
+              }}
+            />
             {tracks.map((track, idx) => {
               const active = idx === currentIndex;
               return (
