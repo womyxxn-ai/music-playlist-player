@@ -326,7 +326,7 @@ export default function App() {
   const D = 'div';
 
   return (
-    <D className="page">
+    <D className={`page${isEmbed ? ' embed' : ''}`}>
       {!isEmbed && (
         <D className="view-toggle" aria-label="플레이어 보기 전환">
           <button

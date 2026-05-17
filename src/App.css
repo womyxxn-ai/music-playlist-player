@@ -9,6 +9,11 @@
   background: transparent;
 }
 
+.page.embed {
+  min-height: 100vh;
+  justify-content: center;
+}
+
 .view-toggle {
   display: inline-flex;
   gap: 4px;
