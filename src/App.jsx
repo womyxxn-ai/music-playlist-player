@@ -204,6 +204,7 @@ export default function App() {
   const trackListRef = useRef(null);
   const trackRowsRef = useRef([]);
   const playlistSectionRef = useRef(null);
+  const skipControlsRef = useRef(null);
   const scrollbarRef = useRef(null);
   const shouldAlignActiveTrackRef = useRef(false);
   const query = useMemo(() => new URLSearchParams(window.location.search), []);
@@ -379,24 +380,35 @@ export default function App() {
     const hero = playerHeroRef.current;
     const cover = coverRef.current;
     const playlist = playlistSectionRef.current;
+    const skipControls = skipControlsRef.current;
     if (!hero || !cover || !playlist) return;
 
     const heroTop = hero.getBoundingClientRect().top;
+    const heroRect = hero.getBoundingClientRect();
     // Shadows are not included in the image rect, so keep a small visual buffer.
     const coverBottom = cover.getBoundingClientRect().bottom + 1;
     const playlistTop = playlist.getBoundingClientRect().top;
     const availableSpace = playlistTop - coverBottom;
-    const size = availableSpace >= 62 ? 34 : 32;
-    const gap = Math.max(0, (availableSpace - size) / 2);
 
-    setNormalHeartMetrics({
-      top: coverBottom - heroTop + gap,
-      size,
-    });
+    if (availableSpace >= 60) {
+      const size = 34;
+      const skipRect = skipControls?.getBoundingClientRect();
+      const fallbackCenter = coverBottom + availableSpace / 2;
+      const centerY = skipRect ? skipRect.top + skipRect.height / 2 : fallbackCenter;
+      const minTop = coverBottom + 7;
+      const maxTop = playlistTop - 7 - size;
+      const top = Math.min(Math.max(centerY - size / 2, minTop), maxTop) - heroRect.top;
 
-    if (availableSpace >= 62) {
+      setNormalHeartMetrics({ top, size });
       setNormalHeartDisplay('visible');
     } else if (availableSpace >= 46) {
+      const size = 32;
+      const gap = Math.max(0, (availableSpace - size) / 2);
+
+      setNormalHeartMetrics({
+        top: coverBottom - heroTop + gap,
+        size,
+      });
       setNormalHeartDisplay('compact');
     } else {
       setNormalHeartDisplay('hidden');
@@ -509,7 +521,7 @@ export default function App() {
           </D>
 
           <D className="hero-controls">
-            <D className="skip-controls">
+            <D className="skip-controls" ref={skipControlsRef}>
               <button type="button" className="skip-btn" onClick={goPrev} aria-label="이전 곡">
                 <IconPrev />
               </button>
