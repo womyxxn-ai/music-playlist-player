@@ -1,5 +1,5 @@
-const DEFAULT_PRIMARY = [120, 165, 210];
-const DEFAULT_SECONDARY = [80, 130, 185];
+const DEFAULT_PRIMARY = [138, 138, 136];
+const DEFAULT_SECONDARY = [118, 118, 116];
 
 function parseBucket(key) {
   return key.split(',').map((n) => Number(n));
@@ -25,7 +25,54 @@ function saturateColor([r, g, b], amount = 1.2) {
   ];
 }
 
-/** 앨범 커버에서 대표색을 추출합니다. 너무 밝거나 어두운 색은 제외합니다. */
+function bucketPixels(data, { includeGray = true, luminanceMin = 0.14, luminanceMax = 0.88 } = {}) {
+  const colorBuckets = new Map();
+  const grayBuckets = new Map();
+
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i + 3] < 100) continue;
+
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const lum = luminance([r, g, b]);
+    if (lum > luminanceMax || lum < luminanceMin) continue;
+
+    const rq = Math.round(r / 16) * 16;
+    const gq = Math.round(g / 16) * 16;
+    const bq = Math.round(b / 16) * 16;
+    const key = `${rq},${gq},${bq}`;
+    const sat = saturation([r, g, b]);
+
+    if (sat < 0.08) {
+      if (includeGray) {
+        grayBuckets.set(key, (grayBuckets.get(key) || 0) + 1);
+      }
+      continue;
+    }
+
+    const weight = 1 + sat * 2.5;
+    colorBuckets.set(key, (colorBuckets.get(key) || 0) + weight);
+  }
+
+  return { colorBuckets, grayBuckets };
+}
+
+function pickDominantColor(colorBuckets, grayBuckets) {
+  const useColor = colorBuckets.size > 0;
+  const buckets = useColor ? colorBuckets : grayBuckets;
+  const sorted = [...buckets.entries()].sort((a, b) => b[1] - a[1]);
+  const fallback = useColor ? DEFAULT_PRIMARY : DEFAULT_SECONDARY;
+  let primary = parseBucket(sorted[0]?.[0] ?? fallback.join(','));
+
+  if (useColor) {
+    primary = saturateColor(primary, 1.25);
+  }
+
+  return { primary, secondary: primary, isGrayscale: !useColor };
+}
+
+/** 앨범 커버에서 대표색을 추출합니다. 컬러·흑백 모두 지원합니다. */
 export function extractTopTwoColors(img) {
   try {
     const canvas = document.createElement('canvas');
@@ -39,33 +86,17 @@ export function extractTopTwoColors(img) {
 
     ctx.drawImage(img, 0, 0, size, size);
     const { data } = ctx.getImageData(0, 0, size, size);
-    const buckets = new Map();
 
-    for (let i = 0; i < data.length; i += 4) {
-      if (data[i + 3] < 100) continue;
-      const r = data[i];
-      const g = data[i + 1];
-      const b = data[i + 2];
-      const lum = luminance([r, g, b]);
-      if (lum > 0.88 || lum < 0.14) continue;
-      if (saturation([r, g, b]) < 0.08) continue;
+    let { colorBuckets, grayBuckets } = bucketPixels(data);
 
-      const rq = Math.round(r / 16) * 16;
-      const gq = Math.round(g / 16) * 16;
-      const bq = Math.round(b / 16) * 16;
-      const key = `${rq},${gq},${bq}`;
-      const weight = 1 + saturation([r, g, b]) * 2.5;
-      buckets.set(key, (buckets.get(key) || 0) + weight);
+    if (colorBuckets.size === 0 && grayBuckets.size === 0) {
+      ({ colorBuckets, grayBuckets } = bucketPixels(data, {
+        luminanceMin: 0.05,
+        luminanceMax: 0.95,
+      }));
     }
 
-    const sorted = [...buckets.entries()].sort((a, b) => b[1] - a[1]);
-    let primary = parseBucket(sorted[0]?.[0] ?? '100,150,200');
-    let secondary = primary;
-
-    primary = saturateColor(primary, 1.25);
-    secondary = primary;
-
-    return { primary, secondary };
+    return pickDominantColor(colorBuckets, grayBuckets);
   } catch {
     return { primary: DEFAULT_PRIMARY, secondary: DEFAULT_SECONDARY };
   }

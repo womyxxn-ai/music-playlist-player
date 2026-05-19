@@ -3,8 +3,10 @@
  * MP3는 url 필드 사용.
  *
  * 커버: public 폴더에 album-cover.jpg 넣기
+ * 같은 파일명으로 이미지만 바꿨으면 ALBUM_COVER_VERSION 숫자를 올리세요.
  */
 export const ALBUM_COVER = '/album-cover.jpg';
+export const ALBUM_COVER_VERSION = '1';
 
 export const tracks = [
   {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
-import { ALBUM_COVER, tracks } from './tracks';
+import { ALBUM_COVER, ALBUM_COVER_VERSION, tracks } from './tracks';
 import { buildThemeStyles, extractTopTwoColors } from './colorFromCover';
 import './App.css';
 
@@ -225,10 +225,14 @@ export default function App() {
   const coverRef = useRef(null);
   const [themeStyle, setThemeStyle] = useState(() =>
     buildThemeStyles({
-      primary: [120, 165, 210],
-      secondary: [80, 130, 185],
+      primary: [138, 138, 136],
+      secondary: [118, 118, 116],
     }),
   );
+  const coverSrc = useMemo(() => {
+    const joiner = ALBUM_COVER.includes('?') ? '&' : '?';
+    return `${ALBUM_COVER}${joiner}v=${ALBUM_COVER_VERSION}`;
+  }, [ALBUM_COVER, ALBUM_COVER_VERSION]);
 
   const applyCoverTheme = useCallback((img) => {
     if (!img || !img.complete || img.naturalWidth === 0) return;
@@ -263,7 +267,7 @@ export default function App() {
     if (coverRef.current) {
       applyCoverTheme(coverRef.current);
     }
-  }, [ALBUM_COVER, applyCoverTheme]);
+  }, [coverSrc, applyCoverTheme]);
 
   useEffect(() => {
     if (!isEmbed || queryMode === 'mini' || queryMode === 'normal') return undefined;
@@ -510,7 +514,7 @@ export default function App() {
             <img
               ref={coverRef}
               className="cover"
-              src={ALBUM_COVER}
+              src={coverSrc}
               alt="앨범 커버"
               onLoad={handleCoverLoad}
             />
